@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       List<Restaurant> restaurants = restaurantFromJson(json);
       setState(
         () {
-          dataNotFound = (listRestaurant.isEmpty) ? true : false;
+          dataNotFound = (restaurants.isEmpty) ? true : false;
           listRestaurant = restaurants;
         },
       );
