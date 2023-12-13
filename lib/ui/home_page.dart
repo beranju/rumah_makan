@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   List<Restaurant> listRestaurant = [];
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  String? error;
+  bool dataNotFound = false;
 
   @override
   void initState() {
@@ -39,13 +41,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadData() async {
-    String json = await rootBundle.loadString(DataSource.dataSource);
-    List<Restaurant> restaurants = restaurantFromJson(json);
-    setState(
-      () {
-        listRestaurant = restaurants;
-      },
-    );
+    try {
+      String json = await rootBundle.loadString(DataSource.dataSource);
+      List<Restaurant> restaurants = restaurantFromJson(json);
+      setState(
+        () {
+          dataNotFound = (listRestaurant.isEmpty) ? true : false;
+          listRestaurant = restaurants;
+        },
+      );
+    } catch (e) {
+      setState(() {
+        error = 'Failed to load the data, try again';
+      });
+    }
   }
 
   void _findByName(String name) {
@@ -56,6 +65,7 @@ class _HomePageState extends State<HomePage> {
         .toList();
     setState(
       () {
+        dataNotFound = (filteredRestaurant.isEmpty) ? true : false;
         listRestaurant = filteredRestaurant;
       },
     );
@@ -74,6 +84,7 @@ class _HomePageState extends State<HomePage> {
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               width: double.infinity,
+              height: 75.0,
               child: Row(
                 children: [
                   Flexible(
@@ -96,6 +107,9 @@ class _HomePageState extends State<HomePage> {
                         suffixIcon: _controller.text.isNotEmpty
                             ? GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    dataNotFound = false;
+                                  });
                                   _controller.clear();
                                   _loadData();
                                 },
@@ -120,19 +134,29 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: listRestaurant.length,
-                itemBuilder: (context, index) {
-                  final restaurant = listRestaurant[index];
-                  return RestaurantItem(
-                    restaurant: restaurant,
-                    onTap: () {
-                      Navigator.pushNamed(context, DetailPage.routeName,
-                          arguments: restaurant);
-                    },
-                  );
-                },
-              ),
+              child: (error == null)
+                  ? (dataNotFound)
+                      ? const Center(child: Text('Restaurant not found :)'))
+                      : ListView.builder(
+                          itemCount: listRestaurant.length,
+                          itemBuilder: (context, index) {
+                            final restaurant = listRestaurant[index];
+                            return RestaurantItem(
+                              restaurant: restaurant,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, DetailPage.routeName,
+                                    arguments: restaurant);
+                              },
+                            );
+                          },
+                        )
+                  : Center(
+                      child: Text(
+                        error!,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
             ),
           ],
         ),
