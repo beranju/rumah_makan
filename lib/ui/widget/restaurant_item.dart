@@ -18,15 +18,18 @@ class RestaurantItem extends StatelessWidget {
         child: Row(
           children: [
             Stack(children: [
-              Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(restaurant.pictureId.toString()))),
+              Hero(
+                tag: restaurant.pictureId.toString(),
+                child: Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(restaurant.pictureId.toString()))),
+                ),
               ),
               Positioned(
                   right: 0.0,

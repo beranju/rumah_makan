@@ -75,9 +75,12 @@ class _DetailPageState extends State<DetailPage> {
               builder: (context, constraint) {
                 var top = constraint.biggest.height;
                 return FlexibleSpaceBar(
-                  background: Image.network(
-                    widget.restaurant.pictureId.toString(),
-                    fit: BoxFit.cover,
+                  background: Hero(
+                    tag: widget.restaurant.pictureId.toString(),
+                    child: Image.network(
+                      widget.restaurant.pictureId.toString(),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   title: Text(
                     top > 80 && top < 90
@@ -142,6 +145,15 @@ class _DetailPageState extends State<DetailPage> {
                 Text(
                   widget.restaurant.description.toString(),
                   style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 12.0),
+                  width: double.infinity,
+                  child: Text(
+                    'Menus',
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
                 buildListMenu(context, 'Drinks', drinks),
                 buildListMenu(context, 'Foods', foods),
