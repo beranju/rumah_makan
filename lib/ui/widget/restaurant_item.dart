@@ -13,7 +13,8 @@ class RestaurantItem extends StatelessWidget {
         (restaurant.rating != null) ? restaurant.rating!.toDouble() : 0.0;
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
+      child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         child: Row(
           children: [
