@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rumah_makan/data/model/Restaurant.dart';
 import 'package:rumah_makan/theme/color_schema.dart';
 import 'package:rumah_makan/theme/typography.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
@@ -29,7 +30,10 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashPage.routeName: (context) => const SplashPage(),
         HomePage.routeName: (context) => const HomePage(),
-        DetailPage.routeName: (context) => const DetailPage(),
+        DetailPage.routeName: (context) => DetailPage(
+              restaurant:
+                  ModalRoute.of(context)?.settings.arguments as Restaurant,
+            ),
       },
     );
   }

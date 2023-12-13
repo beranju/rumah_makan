@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rumah_makan/data/model/Restaurant.dart';
 import 'package:rumah_makan/theme/assets_manager.dart';
+import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
 
 class HomePage extends StatelessWidget {
@@ -43,7 +44,9 @@ class HomePage extends StatelessWidget {
                         itemCount: restaurants.length,
                         itemBuilder: (context, index) {
                           final restaurant = restaurants[index];
-                          return RestaurantItem(restaurant: restaurant);
+                          return RestaurantItem(restaurant: restaurant, onTap: (){
+                            Navigator.pushNamed(context, DetailPage.routeName, arguments: restaurant);
+                          },);
                         });
                   }),
             ),
