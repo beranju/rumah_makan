@@ -1,16 +1,16 @@
-class ListDetailRestaurantResponse {
+class DetailRestaurantResponse {
   bool error;
   String message;
   DetailRestaurant restaurant;
 
-  ListDetailRestaurantResponse({
+  DetailRestaurantResponse({
     required this.error,
     required this.message,
     required this.restaurant,
   });
 
-  factory ListDetailRestaurantResponse.fromMap(Map<String, dynamic> map) {
-    return ListDetailRestaurantResponse(
+  factory DetailRestaurantResponse.fromMap(Map<String, dynamic> map) {
+    return DetailRestaurantResponse(
         error: map['error'] as bool,
         message: map['message'] as String,
         restaurant: DetailRestaurant.fromMap(map['restaurant']));

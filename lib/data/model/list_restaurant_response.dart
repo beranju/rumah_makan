@@ -3,7 +3,7 @@ import 'package:rumah_makan/data/model/restaurant.dart';
 class ListRestaurantResponse {
   bool error;
   String message;
-  int count;
+  num count;
   List<Restaurant> restaurants;
 
   ListRestaurantResponse({
@@ -17,7 +17,7 @@ class ListRestaurantResponse {
     return ListRestaurantResponse(
       error: map['error'] as bool,
       message: map['message'] as String,
-      count: map['count'] as int,
+      count: map['count'] as num,
       restaurants: List<Restaurant>.from(
           map['restaurants'].map((r) => Restaurant.fromMap(r))
       ),

@@ -4,7 +4,7 @@ class Restaurant {
   String description;
   String pictureId;
   String city;
-  double rating;
+  num rating;
 
   Restaurant({
     required this.id,
@@ -22,7 +22,7 @@ class Restaurant {
       description: map['description'] as String,
       pictureId: map['pictureId'] as String,
       city: map['city'] as String,
-      rating: map['rating'] as double,
+      rating: map['rating'] as num,
     );
   }
 }

@@ -55,118 +55,119 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> drinks = (widget.restaurant.menus?.drinks == null)
-        ? []
-        : widget.restaurant.menus?.drinks
-            ?.map((e) => e.name.toString())
-            .toList() as List<String>;
-    final List<String> foods = (widget.restaurant.menus?.foods == null)
-        ? []
-        : widget.restaurant.menus?.foods?.map((e) => e.name.toString()).toList()
-            as List<String>;
+    return Container();
+    // final List<String> drinks = (widget.restaurant.menus?.drinks == null)
+    //     ? []
+    //     : widget.restaurant.?.drinks
+    //         ?.map((e) => e.name.toString())
+    //         .toList() as List<String>;
+    // final List<String> foods = (widget.restaurant.menus?.foods == null)
+    //     ? []
+    //     : widget.restaurant.menus?.foods?.map((e) => e.name.toString()).toList()
+    //         as List<String>;
 
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: NestedScrollView(
-        headerSliverBuilder: (context, isScrolled) {
-          return [
-            SliverAppBar(
-              pinned: true,
-              expandedHeight: 250.0,
-              flexibleSpace: LayoutBuilder(
-                builder: (context, constraint) {
-                  var top = constraint.biggest.height;
-                  return FlexibleSpaceBar(
-                    background: Hero(
-                      tag: widget.restaurant.pictureId.toString(),
-                      child: Image.network(
-                        widget.restaurant.pictureId.toString(),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    title: Text(
-                      top > 80 && top < 90
-                          ? "Detail"
-                          : widget.restaurant.name.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    titlePadding: const EdgeInsets.only(left: 50, bottom: 16),
-                  );
-                },
-              ),
-            )
-          ];
-        },
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(children: [
-                    Expanded(
-                      flex: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.restaurant.name.toString(),
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                          Text(
-                            widget.restaurant.city.toString(),
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            ((widget.restaurant.rating != null)
-                                    ? widget.restaurant.rating
-                                    : 0.0)
-                                .toString(),
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const Icon(
-                            Icons.star,
-                            color: Colors.orange,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  Text(
-                    widget.restaurant.description.toString(),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 12.0),
-                    width: double.infinity,
-                    child: Text(
-                      'Menus',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  buildListMenu(context, 'Drinks', drinks),
-                  buildListMenu(context, 'Foods', foods),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    // return Container(
+    //   color: Theme.of(context).colorScheme.surface,
+    //   child: NestedScrollView(
+    //     headerSliverBuilder: (context, isScrolled) {
+    //       return [
+    //         SliverAppBar(
+    //           pinned: true,
+    //           expandedHeight: 250.0,
+    //           flexibleSpace: LayoutBuilder(
+    //             builder: (context, constraint) {
+    //               var top = constraint.biggest.height;
+    //               return FlexibleSpaceBar(
+    //                 background: Hero(
+    //                   tag: widget.restaurant.pictureId.toString(),
+    //                   child: Image.network(
+    //                     widget.restaurant.pictureId.toString(),
+    //                     fit: BoxFit.cover,
+    //                   ),
+    //                 ),
+    //                 title: Text(
+    //                   top > 80 && top < 90
+    //                       ? "Detail"
+    //                       : widget.restaurant.name.toString(),
+    //                   overflow: TextOverflow.ellipsis,
+    //                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+    //                       color: Theme.of(context).colorScheme.onSurface),
+    //                 ),
+    //                 titlePadding: const EdgeInsets.only(left: 50, bottom: 16),
+    //               );
+    //             },
+    //           ),
+    //         )
+    //       ];
+    //     },
+    //     body: SingleChildScrollView(
+    //       child: SafeArea(
+    //         child: Padding(
+    //           padding: const EdgeInsets.all(16.0),
+    //           child: Column(
+    //             children: [
+    //               Row(children: [
+    //                 Expanded(
+    //                   flex: 4,
+    //                   child: Column(
+    //                     crossAxisAlignment: CrossAxisAlignment.start,
+    //                     children: [
+    //                       Text(
+    //                         widget.restaurant.name.toString(),
+    //                         style: Theme.of(context).textTheme.headlineMedium,
+    //                       ),
+    //                       Text(
+    //                         widget.restaurant.city.toString(),
+    //                         style: Theme.of(context).textTheme.bodyLarge,
+    //                       )
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     crossAxisAlignment: CrossAxisAlignment.center,
+    //                     children: [
+    //                       Text(
+    //                         ((widget.restaurant.rating != null)
+    //                                 ? widget.restaurant.rating
+    //                                 : 0.0)
+    //                             .toString(),
+    //                         style: Theme.of(context).textTheme.titleMedium,
+    //                       ),
+    //                       const Icon(
+    //                         Icons.star,
+    //                         color: Colors.orange,
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ]),
+    //               const SizedBox(
+    //                 height: 12.0,
+    //               ),
+    //               Text(
+    //                 widget.restaurant.description.toString(),
+    //                 style: Theme.of(context).textTheme.bodyMedium,
+    //               ),
+    //               Container(
+    //                 margin: const EdgeInsets.only(top: 12.0),
+    //                 width: double.infinity,
+    //                 child: Text(
+    //                   'Menus',
+    //                   textAlign: TextAlign.start,
+    //                   style: Theme.of(context).textTheme.titleMedium,
+    //                 ),
+    //               ),
+    //               buildListMenu(context, 'Drinks', drinks),
+    //               buildListMenu(context, 'Foods', foods),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -1,18 +1,18 @@
 import 'package:rumah_makan/data/model/restaurant.dart';
 
-class ListRestaurantResponse {
+class SearchRestaurantResponse {
   bool error;
   int founded;
   List<Restaurant> restaurants;
 
-  ListRestaurantResponse({
+  SearchRestaurantResponse({
     required this.error,
     required this.founded,
     required this.restaurants,
   });
 
-  factory ListRestaurantResponse.fromMap(Map<String, dynamic> map) {
-    return ListRestaurantResponse(
+  factory SearchRestaurantResponse.fromMap(Map<String, dynamic> map) {
+    return SearchRestaurantResponse(
       error: map['error'] as bool,
       founded: map['founded'] as int,
       restaurants: List<Restaurant>.from(
