@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
-import 'package:rumah_makan/theme/assets_manager.dart';
+import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
+
+import '../common/theme/assets_manager.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/';

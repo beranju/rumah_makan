@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
-import 'package:rumah_makan/theme/color_schema.dart';
-import 'package:rumah_makan/theme/typography.dart';
+import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/home_page.dart';
 import 'package:rumah_makan/ui/splash_page.dart';
+
+import 'common/theme/color_schema.dart';
+import 'common/theme/typography.dart';
 
 void main() {
   runApp(const MyApp());

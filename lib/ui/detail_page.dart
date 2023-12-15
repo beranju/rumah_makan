@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
+import 'package:rumah_makan/data/model/restaurant.dart';
 
 class DetailPage extends StatefulWidget {
   static const String routeName = '/detail_page';

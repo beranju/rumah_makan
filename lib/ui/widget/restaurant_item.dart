@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
+import 'package:rumah_makan/data/model/restaurant.dart';
 
 class RestaurantItem extends StatelessWidget {
   const RestaurantItem({super.key, required this.restaurant, required this.onTap});
