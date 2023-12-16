@@ -9,7 +9,6 @@ import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/widget/platform_widget.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
 import 'package:rumah_makan/ui/widget/shimmer_list.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/';
@@ -35,8 +34,8 @@ class _HomePageState extends State<HomePage> {
     _focusNode.unfocus();
     super.dispose();
   }
-  
-  Widget _listRestaurant(BuildContext context, List<Restaurant> restaurant){
+
+  Widget _listRestaurant(BuildContext context, List<Restaurant> restaurant) {
     return ListView.builder(
       itemCount: restaurant.length,
       itemBuilder: (context, index) {
@@ -44,8 +43,7 @@ class _HomePageState extends State<HomePage> {
         return RestaurantItem(
           restaurant: rest,
           onTap: () {
-            Navigator.pushNamed(context, DetailPage.routeName,
-                arguments: rest);
+            Navigator.pushNamed(context, DetailPage.routeName, arguments: rest);
           },
         );
       },
@@ -102,16 +100,21 @@ class _HomePageState extends State<HomePage> {
                         _focusNode.unfocus();
                       },
                       onSubmitted: (value) {
+                        Provider.of<RestaurantProvider>(context, listen: false)
+                            .search(value);
                       },
                       decoration: InputDecoration(
                         fillColor: Theme.of(context).colorScheme.surface,
-                        suffixIcon: _controller.text.isNotEmpty
-                            ? GestureDetector(
-                                child: const Icon(
-                                  Icons.close,
-                                ),
-                              )
-                            : null,
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            _controller.clear();
+                            _focusNode.unfocus();
+                            Provider.of<RestaurantProvider>(context, listen: false).fetchRestaurant();
+                          },
+                          child: const Icon(
+                            Icons.close,
+                          ),
+                        ),
                         hintText: 'Find restaurant',
                         filled: true,
                         border: OutlineInputBorder(
@@ -123,7 +126,9 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                     onPressed: () {
                       if (_controller.text.isNotEmpty) {
-                        // _findByName(_controller.text);
+                        final value = _controller.text;
+                        Provider.of<RestaurantProvider>(context, listen: false)
+                            .search(value);
                         _focusNode.unfocus();
                       }
                     },
