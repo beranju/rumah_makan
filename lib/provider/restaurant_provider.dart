@@ -5,6 +5,8 @@ import 'package:rumah_makan/data/model/list_restaurant_response.dart';
 import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/data/model/search_restaurant_response.dart';
 
+import '../data/model/detail_restaurant_response.dart';
+
 class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
 
@@ -13,11 +15,11 @@ class RestaurantProvider extends ChangeNotifier {
   }
 
   late List<Restaurant> _restaurant;
-  // late List<Restaurant> _searchRestaurant;
+  late DetailRestaurant _detailRestaurant;
   late ResultState _state;
-  // late ResultState _searchState;
+  late ResultState _detailState;
   String _message = '';
-  // String _searchMessage = '';
+  String _detailMessage = '';
 
   List<Restaurant> get restaurant => _restaurant;
 
@@ -25,11 +27,11 @@ class RestaurantProvider extends ChangeNotifier {
 
   String get message => _message;
 
-  // List<Restaurant> get searchRestaurant => _searchRestaurant;
-  //
-  // ResultState get searchState => _searchState;
-  //
-  // String get searchMessage => _searchMessage;
+  DetailRestaurant get detailRestaurant => _detailRestaurant;
+
+  ResultState get detailState => _detailState;
+
+  String get detailMessage => _detailMessage;
 
   Future<dynamic> fetchRestaurant() async {
     try {
@@ -74,6 +76,23 @@ class RestaurantProvider extends ChangeNotifier {
       _state = ResultState.error;
       notifyListeners();
       return _message = 'Error -> $e';
+    }
+  }
+
+  Future<dynamic> detail(String id) async {
+    try {
+      _detailState = ResultState.loading;
+      notifyListeners();
+      final DetailRestaurantResponse response =
+          await apiService.detailRestaurant(id);
+      final DetailRestaurant restaurant = response.restaurant;
+      _detailState = ResultState.hasData;
+      notifyListeners();
+      return _detailRestaurant = restaurant;
+    } catch (e) {
+      _detailState = ResultState.error;
+      notifyListeners();
+      return _detailMessage = 'Error -> $e';
     }
   }
 }

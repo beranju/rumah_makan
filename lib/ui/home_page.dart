@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         return RestaurantItem(
           restaurant: rest,
           onTap: () {
-            Navigator.pushNamed(context, DetailPage.routeName, arguments: rest);
+            Navigator.pushNamed(context, DetailPage.routeName, arguments: rest.id);
           },
         );
       },
@@ -154,12 +154,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RestaurantProvider(apiService: ApiService()),
-      child: PlatformWidget(
-        androidBuilder: _buildAndroid,
-        iosBuilder: _buildIos,
-      ),
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
     );
   }
 }

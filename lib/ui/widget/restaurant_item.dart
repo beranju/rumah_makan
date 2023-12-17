@@ -11,8 +11,6 @@ class RestaurantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double rating =
-        (restaurant.rating != null) ? restaurant.rating!.toDouble() : 0.0;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -50,7 +48,7 @@ class RestaurantItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(rating.toString()),
+                      Text(restaurant.rating.toString()),
                       const Icon(
                         Icons.star,
                         color: Colors.orange,
