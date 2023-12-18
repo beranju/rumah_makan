@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
-import 'package:rumah_makan/theme/color_schema.dart';
-import 'package:rumah_makan/theme/typography.dart';
+import 'package:provider/provider.dart';
+import 'package:rumah_makan/provider/add_review_provider.dart';
+import 'package:rumah_makan/provider/detail_restaurant_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/home_page.dart';
 import 'package:rumah_makan/ui/splash_page.dart';
+
+import 'common/theme/color_schema.dart';
+import 'common/theme/typography.dart';
+import 'data/api/api_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,9 +34,18 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashPage.routeName: (context) => const SplashPage(),
         HomePage.routeName: (context) => const HomePage(),
-        DetailPage.routeName: (context) => DetailPage(
-              restaurant:
-                  ModalRoute.of(context)?.settings.arguments as Restaurant,
+        DetailPage.routeName: (context) => MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                    create: (context) =>
+                        DetailRestaurantProvider(apiService: ApiService())),
+                ChangeNotifierProvider(
+                    create: (context) =>
+                        AddReviewProvider(apiService: ApiService())),
+              ],
+              child: DetailPage(
+                id: ModalRoute.of(context)?.settings.arguments as String,
+              ),
             ),
       },
     );

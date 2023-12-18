@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/theme/assets_manager.dart';
 import 'package:rumah_makan/ui/home_page.dart';
+
+import '../common/theme/assets_manager.dart';
 
 class SplashPage extends StatefulWidget {
   static const String routeName = '/splash_page';

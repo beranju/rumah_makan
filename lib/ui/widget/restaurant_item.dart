@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rumah_makan/data/model/Restaurant.dart';
+import 'package:rumah_makan/common/constants.dart';
+import 'package:rumah_makan/data/model/restaurant.dart';
 
 class RestaurantItem extends StatelessWidget {
-  const RestaurantItem({super.key, required this.restaurant, required this.onTap});
+  const RestaurantItem(
+      {super.key, required this.restaurant, required this.onTap});
 
   final Restaurant restaurant;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final double rating =
-        (restaurant.rating != null) ? restaurant.rating!.toDouble() : 0.0;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -29,33 +29,34 @@ class RestaurantItem extends StatelessWidget {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(restaurant.pictureId.toString()))),
+                          image: NetworkImage(Constants.imgBaseUrl +
+                              restaurant.pictureId.toString()))),
                 ),
               ),
               Positioned(
-                  right: 0.0,
-                  top: 0.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                        shape: BoxShape.rectangle,
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            topRight: Radius.circular(10.0))),
-                    padding: const EdgeInsets.all(2.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(rating.toString()),
-                        const Icon(
-                          Icons.star,
-                          color: Colors.orange,
-                          size: 15.0,
-                        ),
-                      ],
-                    ),
+                right: 0.0,
+                top: 0.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      shape: BoxShape.rectangle,
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10.0))),
+                  padding: const EdgeInsets.all(2.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(restaurant.rating.toString()),
+                      const Icon(
+                        Icons.star,
+                        color: Colors.orange,
+                        size: 15.0,
+                      ),
+                    ],
                   ),
+                ),
               ),
             ]),
             Column(
