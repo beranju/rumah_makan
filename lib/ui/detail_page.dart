@@ -186,11 +186,11 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     title: Text(
-                      top > 80 && top < 90 ? "Detail" : restaurant.name,
+                      top > 80 && top < 90 ? restaurant.name : '',
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context)
                           .textTheme
-                          .headlineSmall
+                          .titleLarge
                           ?.copyWith(
                               color: Theme.of(context).colorScheme.onSurface),
                     ),
