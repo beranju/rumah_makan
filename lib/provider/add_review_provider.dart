@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
 import 'package:rumah_makan/common/result_state.dart';
 import 'package:rumah_makan/data/api/api_service.dart';
 import 'package:rumah_makan/data/model/customer_review.dart';
@@ -12,7 +11,7 @@ class AddReviewProvider extends ChangeNotifier {
   AddReviewProvider({required this.apiService});
 
   late List<Review> _review;
-  ResultState _state= ResultState.loading;
+  ResultState _state = ResultState.loading;
   String _message = '';
 
   ResultState get state => _state;
@@ -38,7 +37,7 @@ class AddReviewProvider extends ChangeNotifier {
     } catch (e) {
       _state = ResultState.error;
       notifyListeners();
-      return _message = 'Error -> $e';
+      return _message = e.toString();
     }
   }
 }

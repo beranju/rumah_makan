@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:rumah_makan/common/constants.dart';
@@ -18,38 +20,22 @@ class ApiService {
 
   ApiService._internal();
 
-
   Future<ListRestaurantResponse> listRestaurant() async {
     const endpoint = '/list';
-    final response = await http.get(Uri.parse(Constants.baseUrl + endpoint));
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      return ListRestaurantResponse.fromMap(body);
-    } else {
-      throw Exception('Failed to load restaurant');
-    }
+    return await _getDataFromAPI(
+        endpoint, (fromMap) => ListRestaurantResponse.fromMap(fromMap));
   }
 
   Future<DetailRestaurantResponse> detailRestaurant(String id) async {
     final endpoint = '/detail/$id';
-    final response = await http.get(Uri.parse(Constants.baseUrl + endpoint));
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      return DetailRestaurantResponse.fromMap(body);
-    } else {
-      throw Exception('Failed to load restaurant');
-    }
+    return await _getDataFromAPI(
+        endpoint, (fromMap) => DetailRestaurantResponse.fromMap(fromMap));
   }
 
   Future<SearchRestaurantResponse> searchRestaurant(String query) async {
     final endpoint = '/search?q=$query';
-    final response = await http.get(Uri.parse(Constants.baseUrl + endpoint));
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      return SearchRestaurantResponse.fromMap(body);
-    } else {
-      throw Exception('Failed to load restaurant');
-    }
+    return await _getDataFromAPI(
+        endpoint, (fromMap) => SearchRestaurantResponse.fromMap(fromMap));
   }
 
   Future<ReviewResponse> addReview(ReviewRequest body) async {
@@ -57,13 +43,44 @@ class ApiService {
     Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
-    final response = await http.post(Uri.parse(Constants.baseUrl + endpoint),
-        body: jsonEncode(body.toMap()), headers: headers);
-    final responseBody = json.decode(response.body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return ReviewResponse.fromMap(responseBody);
-    } else {
-      throw Exception(responseBody['message']);
+    try {
+      final response = await http.post(Uri.parse(Constants.baseUrl + endpoint),
+          body: jsonEncode(body.toMap()), headers: headers);
+      final responseBody = json.decode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ReviewResponse.fromMap(responseBody);
+      } else {
+        throw Exception(responseBody['message']);
+      }
+    } on SocketException catch (e) {
+      throw Exception('Check your internet connection!');
+    } on TimeoutException catch (e) {
+      throw Exception('Timeout, Check your internet connection!');
+    } on Error {
+      throw Exception('Something went wrong');
+    }
+  }
+
+  Future<T> _getDataFromAPI<T>(
+      String endpoint, T Function(Map<String, dynamic> fromMap) fromMap) async {
+    int timeout = 10;
+    try {
+      http.Response response = await http
+          .get(Uri.parse(Constants.baseUrl + endpoint))
+          .timeout(Duration(seconds: timeout));
+      final responseBody = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        return fromMap(body);
+      } else {
+        throw Exception(responseBody['message']);
+      }
+    } on SocketException catch (e) {
+      throw Exception('Check your internet connection!');
+    } on TimeoutException catch (e) {
+      throw Exception('Connection timeout, try again!');
+    } on Error {
+      throw Exception('Something went wrong');
     }
   }
 }

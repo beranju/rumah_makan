@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rumah_makan/common/result_state.dart';
+import 'package:rumah_makan/common/theme/assets_manager.dart';
 import 'package:rumah_makan/data/api/api_service.dart';
 import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/provider/restaurant_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
+import 'package:rumah_makan/ui/widget/error.dart';
 import 'package:rumah_makan/ui/widget/platform_widget.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
 import 'package:rumah_makan/ui/widget/shimmer_list.dart';
@@ -65,12 +67,12 @@ class _HomePageState extends State<HomePage> {
           return _listRestaurant(context, state.restaurant);
         } else if (state.state == ResultState.noData) {
           return Center(
-            child: Text(state.message),
+            child: ErrorView(title: state.message, thumbnail: RawAsset.empty),
           );
         } else if (state.state == ResultState.error) {
           return Center(
             child: Material(
-              child: Text(state.message),
+              child: ErrorView(title: state.message, thumbnail: RawAsset.error),
             ),
           );
         } else {

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:rumah_makan/common/constants.dart';
+import 'package:rumah_makan/common/theme/assets_manager.dart';
 import 'package:rumah_makan/data/model/detail_restaurant_response.dart';
 import 'package:rumah_makan/data/model/review_request.dart';
 import 'package:rumah_makan/provider/add_review_provider.dart';
 import 'package:rumah_makan/provider/detail_restaurant_provider.dart';
+import 'package:rumah_makan/ui/widget/error.dart';
 import 'package:rumah_makan/ui/widget/menu_item.dart';
 import 'package:rumah_makan/ui/widget/review_item.dart';
 
@@ -188,11 +191,8 @@ class _DetailPageState extends State<DetailPage> {
                     title: Text(
                       top > 80 && top < 90 ? restaurant.name : '',
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     titlePadding: const EdgeInsets.only(left: 50, bottom: 16),
                   );
@@ -305,30 +305,38 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DetailRestaurantProvider>(
-      builder: (context, state, v) {
-        if (state.detailState == ResultState.loading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state.detailState == ResultState.hasData) {
-          return _buildDetail(context, state.detailRestaurant);
-        } else if (state.detailState == ResultState.noData) {
-          return Center(
-            child: Text(state.detailMessage),
-          );
-        } else if (state.detailState == ResultState.error) {
-          return Center(
-            child: Material(
-              child: Text(state.detailMessage),
-            ),
-          );
-        } else {
-          return const Center(
-            child: Text(''),
-          );
-        }
-      },
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: Consumer<DetailRestaurantProvider>(
+        builder: (context, state, v) {
+          if (state.detailState == ResultState.loading) {
+            return Center(
+              child: Material(
+                  child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Lottie.asset(RawAsset.loading))),
+            );
+          } else if (state.detailState == ResultState.hasData) {
+            return _buildDetail(context, state.detailRestaurant);
+          } else if (state.detailState == ResultState.noData) {
+            return Material(
+              child: Center(
+                child: Text(state.detailMessage),
+              ),
+            );
+          } else if (state.detailState == ResultState.error) {
+            return Center(
+              child: ErrorView(
+                  title: state.detailMessage, thumbnail: RawAsset.error),
+            );
+          } else {
+            return const Center(
+              child: Text(''),
+            );
+          }
+        },
+      ),
     );
   }
 }
