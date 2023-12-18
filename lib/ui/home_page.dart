@@ -22,10 +22,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  bool isShowClose = false;
 
   @override
   void initState() {
     super.initState();
+    _controller.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -43,7 +47,8 @@ class _HomePageState extends State<HomePage> {
         return RestaurantItem(
           restaurant: rest,
           onTap: () {
-            Navigator.pushNamed(context, DetailPage.routeName, arguments: rest.id);
+            Navigator.pushNamed(context, DetailPage.routeName,
+                arguments: rest.id);
           },
         );
       },
@@ -78,74 +83,87 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildAndroid(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RestaurantProvider(apiService: ApiService()),
-      child: Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false, title: const Text("Rumah Makan")),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 12.0),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                width: double.infinity,
-                height: 75.0,
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: TextField(
-                        controller: _controller,
-                        textInputAction: TextInputAction.search,
-                        onTapOutside: (event) {
-                          _focusNode.unfocus();
-                        },
-                        onSubmitted: (value) {
-                          Provider.of<RestaurantProvider>(context, listen: false)
-                              .search(value);
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Theme.of(context).colorScheme.surface,
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              _controller.clear();
-                              _focusNode.unfocus();
-                              Provider.of<RestaurantProvider>(context, listen: false).fetchRestaurant();
-                            },
-                            child: const Icon(
-                              Icons.close,
-                            ),
-                          ),
-                          hintText: 'Find restaurant',
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+    return Scaffold(
+      appBar: AppBar(
+          automaticallyImplyLeading: false, title: const Text("Rumah Makan")),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              width: double.infinity,
+              height: 75.0,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: TextField(
+                      controller: _controller,
+                      textInputAction: TextInputAction.search,
+                      onChanged: (value) {
+                        setState(() {
+                          isShowClose = value.isNotEmpty;
+                        });
+                      },
+                      onTapOutside: (event) {
+                        _focusNode.unfocus();
+                      },
+                      onSubmitted: (value) {
+                        Provider.of<RestaurantProvider>(context, listen: false)
+                            .search(value);
+                        _focusNode.unfocus();
+                        setState(() {
+                          isShowClose = false;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        fillColor: Theme.of(context).colorScheme.surface,
+                        suffixIcon: isShowClose == true
+                            ? IconButton(
+                                onPressed: () {
+                                  _controller.clear();
+                                  // _focusNode.unfocus();
+                                  // Provider.of<RestaurantProvider>(context,
+                                  //         listen: false)
+                                  //     .fetchRestaurant();
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                ),
+                              )
+                            : null,
+                        hintText: 'Find restaurant',
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (_controller.text.isNotEmpty) {
-                          final value = _controller.text;
-                          Provider.of<RestaurantProvider>(context, listen: false)
-                              .search(value);
-                          _focusNode.unfocus();
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.search,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      if (_controller.text.isNotEmpty) {
+                        final value = _controller.text;
+                        Provider.of<RestaurantProvider>(context, listen: false)
+                            .search(value);
+                        _focusNode.unfocus();
+                        setState(() {
+                          isShowClose = false;
+                        });
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                child: _buildList(),
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: _buildList(),
+            ),
+          ],
         ),
       ),
     );
@@ -157,9 +175,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformWidget(
-      androidBuilder: _buildAndroid,
-      iosBuilder: _buildIos,
+    return ChangeNotifierProvider(
+      create: (context) => RestaurantProvider(apiService: ApiService()),
+      child: PlatformWidget(
+        androidBuilder: _buildAndroid,
+        iosBuilder: _buildIos,
+      ),
     );
   }
 }
