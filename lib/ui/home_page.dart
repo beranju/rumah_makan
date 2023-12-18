@@ -82,6 +82,79 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildSearchBar(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      width: double.infinity,
+      height: 75.0,
+      child: Row(
+        children: [
+          Flexible(
+            child: TextField(
+              controller: _controller,
+              textInputAction: TextInputAction.search,
+              onChanged: (value) {
+                setState(() {
+                  isShowClose = value.isNotEmpty;
+                });
+              },
+              onTapOutside: (event) {
+                _focusNode.unfocus();
+              },
+              onSubmitted: (value) {
+                Provider.of<RestaurantProvider>(context, listen: false)
+                    .search(value);
+                _focusNode.unfocus();
+                setState(() {
+                  isShowClose = false;
+                });
+              },
+              decoration: InputDecoration(
+                fillColor: Theme.of(context).colorScheme.surface,
+                suffixIcon: isShowClose == true
+                    ? IconButton(
+                        onPressed: () {
+                          _controller.clear();
+                          // _focusNode.unfocus();
+                          // Provider.of<RestaurantProvider>(context,
+                          //         listen: false)
+                          //     .fetchRestaurant();
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                        ),
+                      )
+                    : null,
+                hintText: 'Find restaurant',
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              if (_controller.text.isNotEmpty) {
+                final value = _controller.text;
+                Provider.of<RestaurantProvider>(context, listen: false)
+                    .search(value);
+                _focusNode.unfocus();
+                setState(() {
+                  isShowClose = false;
+                });
+              }
+            },
+            icon: const Icon(
+              Icons.search,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -89,77 +162,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              width: double.infinity,
-              height: 75.0,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: TextField(
-                      controller: _controller,
-                      textInputAction: TextInputAction.search,
-                      onChanged: (value) {
-                        setState(() {
-                          isShowClose = value.isNotEmpty;
-                        });
-                      },
-                      onTapOutside: (event) {
-                        _focusNode.unfocus();
-                      },
-                      onSubmitted: (value) {
-                        Provider.of<RestaurantProvider>(context, listen: false)
-                            .search(value);
-                        _focusNode.unfocus();
-                        setState(() {
-                          isShowClose = false;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Theme.of(context).colorScheme.surface,
-                        suffixIcon: isShowClose == true
-                            ? IconButton(
-                                onPressed: () {
-                                  _controller.clear();
-                                  // _focusNode.unfocus();
-                                  // Provider.of<RestaurantProvider>(context,
-                                  //         listen: false)
-                                  //     .fetchRestaurant();
-                                },
-                                icon: const Icon(
-                                  Icons.close,
-                                ),
-                              )
-                            : null,
-                        hintText: 'Find restaurant',
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (_controller.text.isNotEmpty) {
-                        final value = _controller.text;
-                        Provider.of<RestaurantProvider>(context, listen: false)
-                            .search(value);
-                        _focusNode.unfocus();
-                        setState(() {
-                          isShowClose = false;
-                        });
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                    ),
-                  )
-                ],
-              ),
-            ),
+            _buildSearchBar(context),
             Expanded(
               child: _buildList(),
             ),
@@ -170,7 +173,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildIos(BuildContext context) {
-    return CupertinoPageScaffold(child: _buildList());
+    return CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Rumah Makan'),
+        ),
+        child: Column(
+          children: [
+            _buildSearchBar(context),
+            _buildList(),
+          ],
+        ));
   }
 
   @override
