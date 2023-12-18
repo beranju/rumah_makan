@@ -1,3 +1,5 @@
+import 'package:rumah_makan/data/model/customer_review.dart';
+
 class DetailRestaurantResponse {
   bool error;
   String message;
@@ -26,8 +28,8 @@ class DetailRestaurant {
   String pictureId;
   List<Category> categories;
   Menus menus;
-  double rating;
-  List<CustomerReview> customerReviews;
+  num rating;
+  List<Review> customerReviews;
 
   DetailRestaurant({
     required this.id,
@@ -53,9 +55,9 @@ class DetailRestaurant {
       categories: List<Category>.from(
           map['categories'].map((x) => Category.fromMap(x))),
       menus: Menus.fromMap(map['menus']),
-      rating: map['rating'] as double,
-      customerReviews: List<CustomerReview>.from(
-          map['customerReviews'].map((x) => CustomerReview.fromMap(x))),
+      rating: map['rating'] as num,
+      customerReviews: List<Review>.from(
+          map['customerReviews'].map((x) => Review.fromMap(x))),
     );
   }
 }
@@ -98,26 +100,6 @@ class Drink {
   factory Drink.fromMap(Map<String, dynamic> map) {
     return Drink(
       name: map['name'] as String,
-    );
-  }
-}
-
-class CustomerReview {
-  String name;
-  String review;
-  String date;
-
-  CustomerReview({
-    required this.name,
-    required this.review,
-    required this.date,
-  });
-
-  factory CustomerReview.fromMap(Map<String, dynamic> map) {
-    return CustomerReview(
-      name: map['name'] as String,
-      review: map['review'] as String,
-      date: map['date'] as String,
     );
   }
 }

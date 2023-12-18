@@ -39,6 +39,7 @@ dependencies:
   http: ^1.1.2
   provider: ^6.1.1
   shimmer: ^3.0.0
+  adaptive_dialog: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -78,71 +78,74 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildAndroid(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false, title: const Text("Rumah Makan")),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(bottom: 12.0),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              width: double.infinity,
-              height: 75.0,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: TextField(
-                      controller: _controller,
-                      textInputAction: TextInputAction.search,
-                      onTapOutside: (event) {
-                        _focusNode.unfocus();
-                      },
-                      onSubmitted: (value) {
-                        Provider.of<RestaurantProvider>(context, listen: false)
-                            .search(value);
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Theme.of(context).colorScheme.surface,
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            _controller.clear();
-                            _focusNode.unfocus();
-                            Provider.of<RestaurantProvider>(context, listen: false).fetchRestaurant();
-                          },
-                          child: const Icon(
-                            Icons.close,
+    return ChangeNotifierProvider(
+      create: (context) => RestaurantProvider(apiService: ApiService()),
+      child: Scaffold(
+        appBar: AppBar(
+            automaticallyImplyLeading: false, title: const Text("Rumah Makan")),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 12.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                width: double.infinity,
+                height: 75.0,
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextField(
+                        controller: _controller,
+                        textInputAction: TextInputAction.search,
+                        onTapOutside: (event) {
+                          _focusNode.unfocus();
+                        },
+                        onSubmitted: (value) {
+                          Provider.of<RestaurantProvider>(context, listen: false)
+                              .search(value);
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              _controller.clear();
+                              _focusNode.unfocus();
+                              Provider.of<RestaurantProvider>(context, listen: false).fetchRestaurant();
+                            },
+                            child: const Icon(
+                              Icons.close,
+                            ),
                           ),
-                        ),
-                        hintText: 'Find restaurant',
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          hintText: 'Find restaurant',
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (_controller.text.isNotEmpty) {
-                        final value = _controller.text;
-                        Provider.of<RestaurantProvider>(context, listen: false)
-                            .search(value);
-                        _focusNode.unfocus();
-                      }
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                    ),
-                  )
-                ],
+                    IconButton(
+                      onPressed: () {
+                        if (_controller.text.isNotEmpty) {
+                          final value = _controller.text;
+                          Provider.of<RestaurantProvider>(context, listen: false)
+                              .search(value);
+                          _focusNode.unfocus();
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: _buildList(),
-            ),
-          ],
+              Expanded(
+                child: _buildList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
