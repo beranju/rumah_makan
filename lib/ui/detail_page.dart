@@ -32,8 +32,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<DetailRestaurantProvider>(context, listen: false)
-        .detail(widget.id);
+    context.read<DetailRestaurantProvider>().detail(widget.id);
   }
 
   @override
@@ -319,12 +318,6 @@ class _DetailPageState extends State<DetailPage> {
             );
           } else if (state.detailState == ResultState.hasData) {
             return _buildDetail(context, state.detailRestaurant);
-          } else if (state.detailState == ResultState.noData) {
-            return Material(
-              child: Center(
-                child: Text(state.detailMessage),
-              ),
-            );
           } else if (state.detailState == ResultState.error) {
             return Center(
               child: ErrorView(
