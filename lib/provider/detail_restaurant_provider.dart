@@ -37,6 +37,7 @@ class DetailRestaurantProvider extends ChangeNotifier {
       }
     } catch (e) {
       _detailState = ResultState.error;
+      notifyListeners();
       _detailMessage = e.toString();
     }
   }
