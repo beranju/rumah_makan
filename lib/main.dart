@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rumah_makan/provider/add_review_provider.dart';
+import 'package:rumah_makan/provider/db_provider.dart';
 import 'package:rumah_makan/provider/detail_restaurant_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
+import 'package:rumah_makan/ui/favorite_page.dart';
 import 'package:rumah_makan/ui/home_page.dart';
 import 'package:rumah_makan/ui/splash_page.dart';
 
@@ -47,6 +49,8 @@ class MyApp extends StatelessWidget {
                 id: ModalRoute.of(context)?.settings.arguments as String,
               ),
             ),
+        FavoritePage.routeName: (context) => ChangeNotifierProvider(
+            create: (context) => DbProvider(), child: const FavoritePage()),
       },
     );
   }

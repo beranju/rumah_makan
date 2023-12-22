@@ -7,6 +7,7 @@ import 'package:rumah_makan/data/api/api_service.dart';
 import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/provider/restaurant_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
+import 'package:rumah_makan/ui/favorite_page.dart';
 import 'package:rumah_makan/ui/widget/error.dart';
 import 'package:rumah_makan/ui/widget/platform_widget.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
@@ -160,7 +161,19 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false, title: const Text("Rumah Makan")),
+        automaticallyImplyLeading: false,
+        title: const Text("Rumah Makan"),
+        actions: [
+          InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, FavoritePage.routeName);
+              },
+              child: const Icon(
+                Icons.favorite,
+                color: Colors.redAccent,
+              ))
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [

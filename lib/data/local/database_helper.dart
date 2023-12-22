@@ -26,9 +26,9 @@ class DatabaseHelper {
       await db.execute(
         '''CREATE TABLE $_tableName 
         (
-           id INTEGER PRIMARY KEY,
-           name TEXT, 
-           city TEXT,
+           id VARCHAR PRIMARY KEY,
+           name VARCHAR, 
+           city VARCHAR,
            img TEXT,
            rate DECIMAL
         )''',
@@ -53,7 +53,7 @@ class DatabaseHelper {
     return results.map((res) => Restaurant.fromMap(res)).toList();
   }
 
-  Future<void> deleteRestaurant(int id) async {
+  Future<void> deleteRestaurant(String id) async {
     final db = await database;
 
     await db.delete(

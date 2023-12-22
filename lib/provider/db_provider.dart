@@ -24,7 +24,7 @@ class DbProvider extends ChangeNotifier{
     _getAllRestaurant();
   }
 
-  void deleteRestaurant(int id) async {
+  void deleteRestaurant(String id) async {
     await _databaseHelper.deleteRestaurant(id);
     _getAllRestaurant();
   }
