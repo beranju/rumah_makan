@@ -3,13 +3,16 @@ import 'package:rumah_makan/data/local/database_helper.dart';
 
 import '../data/model/restaurant.dart';
 
-class DbProvider extends ChangeNotifier{
+class DbProvider extends ChangeNotifier {
   List<Restaurant> _restaurant = [];
+  bool _isFavorite = false;
   late DatabaseHelper _databaseHelper;
 
   List<Restaurant> get restaurant => _restaurant;
 
-  DbProvider(){
+  bool get isFavorite => _isFavorite;
+
+  DbProvider() {
     _databaseHelper = DatabaseHelper();
     _getAllRestaurant();
   }
@@ -21,11 +24,17 @@ class DbProvider extends ChangeNotifier{
 
   Future<void> addRestaurant(Restaurant restaurant) async {
     await _databaseHelper.insertRestaurant(restaurant);
-    _getAllRestaurant();
+    checkIsFavorite(restaurant.id);
+  }
+
+  void checkIsFavorite(String id) async {
+    _isFavorite = await _databaseHelper.isFavorite(id);
+    notifyListeners();
   }
 
   void deleteRestaurant(String id) async {
     await _databaseHelper.deleteRestaurant(id);
+    checkIsFavorite(id);
     _getAllRestaurant();
   }
 }

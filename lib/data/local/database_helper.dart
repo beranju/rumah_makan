@@ -28,12 +28,13 @@ class DatabaseHelper {
         (
            id VARCHAR PRIMARY KEY,
            name VARCHAR, 
+           description TEXT,
+           pictureId VARCHAR,
            city VARCHAR,
-           img TEXT,
-           rate DECIMAL
+           rating DECIMAL
         )''',
       );
-    }, version: 1);
+    }, version: 2);
 
     return db;
   }
@@ -51,6 +52,17 @@ class DatabaseHelper {
     List<Map<String, dynamic>> results = await db.query(_tableName);
 
     return results.map((res) => Restaurant.fromMap(res)).toList();
+  }
+
+  Future<bool> isFavorite(String id) async {
+    final Database db = await database;
+    List<Map<String, dynamic>> results = await db.query(_tableName,
+        where: 'id = ?',
+        whereArgs: [id]);
+    if (results.isNotEmpty) {
+      return true;
+    }
+    return false;
   }
 
   Future<void> deleteRestaurant(String id) async {

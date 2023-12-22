@@ -6,6 +6,7 @@ import 'package:rumah_makan/common/theme/assets_manager.dart';
 import 'package:rumah_makan/data/model/detail_restaurant_response.dart';
 import 'package:rumah_makan/data/model/review_request.dart';
 import 'package:rumah_makan/provider/add_review_provider.dart';
+import 'package:rumah_makan/provider/db_provider.dart';
 import 'package:rumah_makan/provider/detail_restaurant_provider.dart';
 import 'package:rumah_makan/ui/widget/error.dart';
 import 'package:rumah_makan/ui/widget/menu_item.dart';
@@ -13,6 +14,7 @@ import 'package:rumah_makan/ui/widget/review_item.dart';
 
 import '../common/result_state.dart';
 import '../data/model/customer_review.dart';
+import '../data/model/restaurant.dart';
 
 class DetailPage extends StatefulWidget {
   static const String routeName = '/detail_page';
@@ -33,6 +35,7 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
     context.read<DetailRestaurantProvider>().detail(widget.id);
+    Provider.of<DbProvider>(context, listen: false).checkIsFavorite(widget.id);
   }
 
   @override
@@ -197,7 +200,48 @@ class _DetailPageState extends State<DetailPage> {
                   );
                 },
               ),
-            )
+              actions: [
+                Consumer<DbProvider>(
+                  builder: (c, provider, w) {
+                    final isFavorite = provider.isFavorite;
+                    return GestureDetector(
+                      onTap: () {
+                        final data = Restaurant(
+                            id: restaurant.id,
+                            name: restaurant.name,
+                            description: restaurant.description,
+                            pictureId: restaurant.pictureId,
+                            city: restaurant.city,
+                            rating: restaurant.rating);
+                        if (isFavorite) {
+                          provider.deleteRestaurant(widget.id);
+                        } else {
+                          provider.addRestaurant(data);
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 24.0),
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .surface
+                              .withOpacity(0.8),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite
+                              ? Theme.of(context).colorScheme.error
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
           ];
         },
         body: Consumer<AddReviewProvider>(

@@ -19,7 +19,7 @@ class FavoritePage extends StatelessWidget {
               itemBuilder: (_, index) {
                 final item = restaurants[index];
                 return Dismissible(
-                  key: Key(item.id),
+                  key: UniqueKey(),
                   background: Container(
                     color: Theme.of(context).colorScheme.errorContainer,
                   ),

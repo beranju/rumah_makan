@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider(
                     create: (context) =>
                         AddReviewProvider(apiService: ApiService())),
+                ChangeNotifierProvider(create: (context) => DbProvider())
               ],
               child: DetailPage(
                 id: ModalRoute.of(context)?.settings.arguments as String,
