@@ -119,10 +119,6 @@ class _HomePageState extends State<HomePage> {
                     ? IconButton(
                         onPressed: () {
                           _controller.clear();
-                          // _focusNode.unfocus();
-                          // Provider.of<RestaurantProvider>(context,
-                          //         listen: false)
-                          //     .fetchRestaurant();
                         },
                         icon: const Icon(
                           Icons.close,
@@ -168,9 +164,12 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.pushNamed(context, FavoritePage.routeName);
               },
-              child: const Icon(
-                Icons.favorite,
-                color: Colors.redAccent,
+              child: Container(
+                margin: const EdgeInsets.only(right: 24.0),
+                child: Icon(
+                  Icons.favorite,
+                  color: Theme.of(context).colorScheme.error,
+                ),
               ))
         ],
       ),
