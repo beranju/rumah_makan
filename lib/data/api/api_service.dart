@@ -53,9 +53,9 @@ class ApiService {
       } else {
         throw Exception(responseBody['message']);
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception('Check your internet connection!');
-    } on TimeoutException catch (e) {
+    } on TimeoutException {
       throw Exception('Timeout, Check your internet connection!');
     } on Error {
       throw Exception('Something went wrong');
@@ -76,9 +76,9 @@ class ApiService {
       } else {
         throw Exception(responseBody['message']);
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       throw Exception('Check your internet connection!');
-    } on TimeoutException catch (e) {
+    } on TimeoutException {
       throw Exception('Connection timeout, try again!');
     } on Error catch (e) {
       if (kDebugMode) {

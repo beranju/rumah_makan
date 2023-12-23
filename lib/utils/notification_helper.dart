@@ -67,7 +67,8 @@ class NotificationHelper {
     final randomIndex = Random().nextInt(restaurants.length);
     final randomRestaurant = restaurants[randomIndex];
 
-    var titleNotification = "<b>Explore ${randomRestaurant.name} restaurant</b>";
+    var titleNotification =
+        "<b>Explore ${randomRestaurant.name} restaurant</b>";
     var restaurantDetail =
         "${randomRestaurant.rating} star restaurant at ${randomRestaurant.city}";
 

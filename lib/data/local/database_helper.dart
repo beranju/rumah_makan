@@ -56,9 +56,8 @@ class DatabaseHelper {
 
   Future<bool> isFavorite(String id) async {
     final Database db = await database;
-    List<Map<String, dynamic>> results = await db.query(_tableName,
-        where: 'id = ?',
-        whereArgs: [id]);
+    List<Map<String, dynamic>> results =
+        await db.query(_tableName, where: 'id = ?', whereArgs: [id]);
     if (results.isNotEmpty) {
       return true;
     }

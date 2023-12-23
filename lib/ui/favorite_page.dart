@@ -49,7 +49,8 @@ class FavoritePage extends StatelessWidget {
                     child: RestaurantItem(
                       restaurant: item,
                       onTap: () {
-                        Navigation.intentWithData(DetailPage.routeName, item.id);
+                        Navigation.intentWithData(
+                            DetailPage.routeName, item.id);
                         // Navigator.pushNamed(context, DetailPage.routeName, arguments: item.id);
                       },
                     ),

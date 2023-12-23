@@ -1,4 +1,3 @@
-
 class Review {
   String name;
   String review;
@@ -12,9 +11,9 @@ class Review {
 
   Map<String, dynamic> toMap() {
     return {
-      'name': this.name,
-      'review': this.review,
-      'date': this.date,
+      'name': name,
+      'review': review,
+      'date': date,
     };
   }
 

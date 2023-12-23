@@ -25,12 +25,15 @@ class RestaurantItem extends StatelessWidget {
                   width: 100.0,
                   height: 100.0,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(Constants.imgBaseUrl +
-                              restaurant.pictureId.toString()))),
+                    borderRadius: BorderRadius.circular(10.0),
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        Constants.imgBaseUrl + restaurant.pictureId.toString(),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Positioned(

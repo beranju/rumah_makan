@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import '../utils/background_service.dart';
 import '../utils/date_time_helper.dart';
 
-class SchedulingProvider extends ChangeNotifier{
+class SchedulingProvider extends ChangeNotifier {
   bool _isScheduled = false;
 
   bool get isScheduled => _isScheduled;

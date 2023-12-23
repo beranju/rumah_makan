@@ -9,7 +9,7 @@ import 'notification_helper.dart';
 
 final ReceivePort port = ReceivePort();
 
-class BackgroundService{
+class BackgroundService {
   static BackgroundService? _instance;
   static const String _isolateName = 'isolate';
   static SendPort? _uiSendPort;
@@ -39,5 +39,4 @@ class BackgroundService{
     _uiSendPort ??= IsolateNameServer.lookupPortByName(_isolateName);
     _uiSendPort?.send(null);
   }
-
 }

@@ -22,17 +22,17 @@ import 'common/theme/typography.dart';
 import 'data/api/api_service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final NotificationHelper _notificationHelper = NotificationHelper();
-  final BackgroundService _service = BackgroundService();
-  _service.initializeIsolate();
+  final NotificationHelper notificationHelper = NotificationHelper();
+  final BackgroundService service = BackgroundService();
+  service.initializeIsolate();
   if (Platform.isAndroid) {
     await AndroidAlarmManager.initialize();
   }
-  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+  await notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
   runApp(const MyApp());
 }
 
@@ -60,11 +60,13 @@ class MyApp extends StatelessWidget {
         DetailPage.routeName: (context) => MultiProvider(
               providers: [
                 ChangeNotifierProvider(
-                    create: (context) =>
-                        DetailRestaurantProvider(apiService: ApiService())),
+                  create: (context) =>
+                      DetailRestaurantProvider(apiService: ApiService()),
+                ),
                 ChangeNotifierProvider(
-                    create: (context) =>
-                        AddReviewProvider(apiService: ApiService())),
+                  create: (context) =>
+                      AddReviewProvider(apiService: ApiService()),
+                ),
                 ChangeNotifierProvider(create: (context) => DbProvider())
               ],
               child: DetailPage(
@@ -72,7 +74,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
         FavoritePage.routeName: (context) => ChangeNotifierProvider(
-            create: (context) => DbProvider(), child: const FavoritePage()),
+              create: (context) => DbProvider(),
+              child: const FavoritePage(),
+            ),
         SettingPage.routeName: (context) => ChangeNotifierProvider(
             create: (context) => SchedulingProvider(),
             child: const SettingPage()),
