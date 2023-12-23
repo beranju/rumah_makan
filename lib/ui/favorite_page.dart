@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rumah_makan/common/navigation.dart';
 import 'package:rumah_makan/provider/db_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/widget/error.dart';
@@ -18,7 +19,7 @@ class FavoritePage extends StatelessWidget {
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigation.back();
             },
             child: const Icon(Icons.arrow_back)),
         title: const Text('Favorite Restaurant'),
@@ -48,7 +49,8 @@ class FavoritePage extends StatelessWidget {
                     child: RestaurantItem(
                       restaurant: item,
                       onTap: () {
-                        Navigator.pushNamed(context, DetailPage.routeName, arguments: item.id);
+                        Navigation.intentWithData(DetailPage.routeName, item.id);
+                        // Navigator.pushNamed(context, DetailPage.routeName, arguments: item.id);
                       },
                     ),
                   );

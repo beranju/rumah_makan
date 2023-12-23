@@ -13,13 +13,22 @@ class ListRestaurantResponse {
     required this.restaurants,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      'error': error,
+      'message': message,
+      'count': count,
+      'restaurants': List<dynamic>.from(restaurants.map((e) => e.toMap())),
+    };
+  }
+
   factory ListRestaurantResponse.fromMap(Map<String, dynamic> map) {
     return ListRestaurantResponse(
       error: map['error'] as bool,
       message: map['message'] as String,
       count: map['count'] as num,
       restaurants: List<Restaurant>.from(
-          map['restaurants'].map((r) => Restaurant.fromMap(r))
+        map['restaurants'].map((x) => Restaurant.fromMap(x)),
       ),
     );
   }

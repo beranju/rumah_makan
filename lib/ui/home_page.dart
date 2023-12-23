@@ -8,10 +8,14 @@ import 'package:rumah_makan/data/model/restaurant.dart';
 import 'package:rumah_makan/provider/restaurant_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/favorite_page.dart';
+import 'package:rumah_makan/ui/setting_page.dart';
 import 'package:rumah_makan/ui/widget/error.dart';
 import 'package:rumah_makan/ui/widget/platform_widget.dart';
 import 'package:rumah_makan/ui/widget/restaurant_item.dart';
 import 'package:rumah_makan/ui/widget/shimmer_list.dart';
+
+import '../common/navigation.dart';
+import '../utils/notification_helper.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/';
@@ -23,6 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool isShowClose = false;
@@ -30,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _notificationHelper
+        .configureSelectNotificationSubject(DetailPage.routeName);
     _controller.addListener(() {
       setState(() {});
     });
@@ -37,9 +44,38 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    selectNotificationSubject.close();
     _controller.dispose();
     _focusNode.unfocus();
     super.dispose();
+  }
+
+  List<Widget> _buildAction() {
+    return [
+      InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, FavoritePage.routeName);
+        },
+        child: Container(
+          margin: const EdgeInsets.only(right: 24.0),
+          child: Icon(
+            Icons.favorite,
+            color: Theme.of(context).colorScheme.error,
+          ),
+        ),
+      ),
+      InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed(SettingPage.routeName);
+        },
+        child: Container(
+          margin: const EdgeInsets.only(right: 24.0),
+          child: const Icon(
+            Icons.settings,
+          ),
+        ),
+      ),
+    ];
   }
 
   Widget _listRestaurant(BuildContext context, List<Restaurant> restaurant) {
@@ -50,8 +86,9 @@ class _HomePageState extends State<HomePage> {
         return RestaurantItem(
           restaurant: rest,
           onTap: () {
-            Navigator.pushNamed(context, DetailPage.routeName,
-                arguments: rest.id);
+            Navigation.intentWithData(DetailPage.routeName, rest.id);
+            // Navigator.pushNamed(context, DetailPage.routeName,
+            //     arguments: rest.id);
           },
         );
       },
@@ -159,19 +196,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("Rumah Makan"),
-        actions: [
-          InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, FavoritePage.routeName);
-              },
-              child: Container(
-                margin: const EdgeInsets.only(right: 24.0),
-                child: Icon(
-                  Icons.favorite,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ))
-        ],
+        actions: _buildAction(),
       ),
       body: SafeArea(
         child: Column(
@@ -188,8 +213,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildIos(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(
-          middle: Text('Rumah Makan'),
+        navigationBar: CupertinoNavigationBar(
+          middle: const Text('Rumah Makan'),
+          trailing: Row(
+            children: _buildAction(),
+          ),
         ),
         child: Column(
           children: [

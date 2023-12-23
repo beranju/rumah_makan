@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:rumah_makan/common/constants.dart';
 import 'package:rumah_makan/data/model/detail_restaurant_response.dart';
@@ -79,7 +80,10 @@ class ApiService {
       throw Exception('Check your internet connection!');
     } on TimeoutException catch (e) {
       throw Exception('Connection timeout, try again!');
-    } on Error {
+    } on Error catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
       throw Exception('Something went wrong');
     }
   }

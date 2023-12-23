@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:rumah_makan/common/navigation.dart';
 import 'package:rumah_makan/ui/home_page.dart';
 
 import '../common/theme/assets_manager.dart';
@@ -25,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
     const second = 3;
     const duration = Duration(seconds: second);
     return Timer(duration, () {
-      Navigator.pushReplacementNamed(context, HomePage.routeName);
+      Navigation.intentReplace(HomePage.routeName);
     });
   }
 

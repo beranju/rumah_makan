@@ -1,18 +1,38 @@
+import 'dart:io';
+
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:rumah_makan/common/navigation.dart';
 import 'package:rumah_makan/provider/add_review_provider.dart';
 import 'package:rumah_makan/provider/db_provider.dart';
 import 'package:rumah_makan/provider/detail_restaurant_provider.dart';
+import 'package:rumah_makan/provider/scheduling_provider.dart';
 import 'package:rumah_makan/ui/detail_page.dart';
 import 'package:rumah_makan/ui/favorite_page.dart';
 import 'package:rumah_makan/ui/home_page.dart';
+import 'package:rumah_makan/ui/setting_page.dart';
 import 'package:rumah_makan/ui/splash_page.dart';
+import 'package:rumah_makan/utils/background_service.dart';
+import 'package:rumah_makan/utils/notification_helper.dart';
 
 import 'common/theme/color_schema.dart';
 import 'common/theme/typography.dart';
 import 'data/api/api_service.dart';
 
-void main() {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final NotificationHelper _notificationHelper = NotificationHelper();
+  final BackgroundService _service = BackgroundService();
+  _service.initializeIsolate();
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
+  await _notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
   runApp(const MyApp());
 }
 
@@ -32,6 +52,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: darkColorScheme,
           textTheme: myTextStyle),
+      navigatorKey: navigatorKey,
       initialRoute: SplashPage.routeName,
       routes: {
         SplashPage.routeName: (context) => const SplashPage(),
@@ -52,6 +73,9 @@ class MyApp extends StatelessWidget {
             ),
         FavoritePage.routeName: (context) => ChangeNotifierProvider(
             create: (context) => DbProvider(), child: const FavoritePage()),
+        SettingPage.routeName: (context) => ChangeNotifierProvider(
+            create: (context) => SchedulingProvider(),
+            child: const SettingPage()),
       },
     );
   }
