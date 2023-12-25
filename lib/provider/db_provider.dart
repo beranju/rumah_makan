@@ -14,10 +14,10 @@ class DbProvider extends ChangeNotifier {
 
   DbProvider() {
     _databaseHelper = DatabaseHelper();
-    _getAllRestaurant();
+    getAllRestaurant();
   }
 
-  void _getAllRestaurant() async {
+  void getAllRestaurant() async {
     _restaurant = await _databaseHelper.getRestaurants();
     notifyListeners();
   }
@@ -35,6 +35,6 @@ class DbProvider extends ChangeNotifier {
   void deleteRestaurant(String id) async {
     await _databaseHelper.deleteRestaurant(id);
     checkIsFavorite(id);
-    _getAllRestaurant();
+    getAllRestaurant();
   }
 }

@@ -24,20 +24,20 @@ class FavoritePage extends StatelessWidget {
             child: const Icon(Icons.arrow_back)),
         title: const Text('Favorite Restaurant'),
       ),
-      body: SafeArea(child: Consumer<DbProvider>(
-        builder: (BuildContext context, DbProvider value, Widget? child) {
-          final restaurants = value.restaurant;
-          if (restaurants.isEmpty) {
-            return const Center(
-              child: ErrorView(
-                  title: 'Favorite restaurant are empty',
-                  thumbnail: RawAsset.empty),
-            );
-          } else {
-            return ListView.builder(
-                itemCount: restaurants.length,
+      body: SafeArea(
+        child: Consumer<DbProvider>(
+          builder: (BuildContext context, DbProvider value, Widget? child) {
+            if (value.restaurant.isEmpty) {
+              return const Center(
+                child: ErrorView(
+                    title: 'Favorite restaurant are empty',
+                    thumbnail: RawAsset.empty),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: value.restaurant.length,
                 itemBuilder: (_, index) {
-                  final item = restaurants[index];
+                  final item = value.restaurant[index];
                   return Dismissible(
                     key: UniqueKey(),
                     background: Container(
@@ -49,16 +49,19 @@ class FavoritePage extends StatelessWidget {
                     child: RestaurantItem(
                       restaurant: item,
                       onTap: () {
-                        Navigation.intentWithData(
-                            DetailPage.routeName, item.id);
-                        // Navigator.pushNamed(context, DetailPage.routeName, arguments: item.id);
+                        Navigation.intentWithData(DetailPage.routeName, item.id)
+                            .then((_) =>
+                                Provider.of<DbProvider>(context, listen: false)
+                                    .getAllRestaurant());
                       },
                     ),
                   );
-                });
-          }
-        },
-      )),
+                },
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }
